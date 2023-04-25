@@ -175,7 +175,7 @@ void moveBackward(){
   digitalWrite(leftAntiClockWiseDirection,HIGH);
   digitalWrite(rightClockWiseDirection,LOW);
   digitalWrite(rightAntiClockWiseDirection,HIGH);
-  delay(250);
+  delay(900);
 
  
 }
@@ -187,7 +187,7 @@ void turnRight(){
   digitalWrite(rightClockWiseDirection,LOW);
   digitalWrite(rightAntiClockWiseDirection,HIGH);
 
-  delay(600);
+  delay(1200);
 }
 
 void turnLeft(){
@@ -197,5 +197,5 @@ void turnLeft(){
   digitalWrite(rightClockWiseDirection,HIGH);
   digitalWrite(rightAntiClockWiseDirection,LOW);
 
-  delay(600);
+  delay(1200);
 }
