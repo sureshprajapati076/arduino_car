@@ -24,7 +24,6 @@ digitalWrite(rightClock,LOW);
 digitalWrite(rightAntiClock,LOW);
 digitalWrite(leftClock,LOW);
 digitalWrite(leftAntiClock,LOW);
-Serial.begin(9600);
 }
 
 void loop() {
@@ -34,28 +33,11 @@ int leftInput = digitalRead(inputLeft);
 int forwardInput = digitalRead(inputForward);
 int backwardInput = digitalRead(inputBackward);
 
-Serial.print("RIGHT: ");
-Serial.print(rightInput);
-Serial.print(" LEFT: ");
-Serial.print(leftInput);
-Serial.print(" FORWARD: ");
-Serial.print(forwardInput);
-Serial.print(" BACKWARD: ");
-Serial.println(backwardInput);
-
-
-
-if(rightInput == HIGH && backwardInput == HIGH){
-  turnBackwardRight();
-}
-else if(rightInput == HIGH){
-  turnRight();
-}
-else if(leftInput == HIGH && backwardInput == HIGH){
-  turnBackwardLeft();
-}
-else if(leftInput == HIGH){
+if(rightInput == HIGH && backwardInput == HIGH || leftInput == HIGH){
   turnLeft();
+}
+else if(leftInput == HIGH && backwardInput == HIGH || rightInput == HIGH){
+  turnRight();
 }
 else if(forwardInput == HIGH){
   moveForward();
@@ -66,7 +48,6 @@ else if(backwardInput == HIGH){
 else{
   stopCar();
 }
-
 
 delay(5);
 }
@@ -99,26 +80,6 @@ void turnRight(){
   digitalWrite(leftClock,HIGH);
   digitalWrite(leftAntiClock,LOW);
 }
-
-void turnBackwardRight(){
-  digitalWrite(rightClock,HIGH);
-  digitalWrite(rightAntiClock,LOW);
-  digitalWrite(leftClock,LOW);
-  digitalWrite(leftAntiClock,HIGH);
-}
-
-
-
-void turnBackwardLeft(){
-  digitalWrite(rightClock,LOW);
-  digitalWrite(rightAntiClock,HIGH);
-  digitalWrite(leftClock,HIGH);
-  digitalWrite(leftAntiClock,LOW);
-}
-
-
-
-
 
 void stopCar(){
   digitalWrite(rightClock,LOW);
