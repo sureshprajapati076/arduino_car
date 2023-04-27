@@ -33,15 +33,6 @@ int leftInput = digitalRead(inputLeft);
 int forwardInput = digitalRead(inputForward);
 int backwardInput = digitalRead(inputBackward);
 
-Serial.print("RIGHT: ");
-Serial.print(rightInput);
-Serial.print(" LEFT: ");
-Serial.print(leftInput);
-Serial.print(" FORWARD: ");
-Serial.print(forwardInput);
-Serial.print(" BACKWARD: ");
-Serial.println(backwardInput);
-
 if(rightInput == HIGH && backwardInput == HIGH){
   turnLeft();
 }
