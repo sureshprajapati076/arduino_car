@@ -1,94 +1,45 @@
-int inputForward=3;
-int inputBackward=2;
-int inputRight=5;
-int inputLeft=4;
+// charging controller code
 
-int rightClock=9;
-int rightAntiClock=10;
-int leftClock=11;
-int leftAntiClock=12;
 
-void setup() {
-pinMode(rightClock,OUTPUT);
-pinMode(rightAntiClock,OUTPUT);
-pinMode(leftClock,OUTPUT);
-pinMode(leftAntiClock,OUTPUT);
 
-pinMode(inputForward,INPUT);
-pinMode(inputBackward,INPUT);
-pinMode(inputRight,INPUT);
-pinMode(inputLeft,INPUT);
-
-digitalWrite(rightClock,LOW);
-digitalWrite(rightAntiClock,LOW);
-digitalWrite(leftClock,LOW);
-digitalWrite(leftAntiClock,LOW);
+int tempPin = 0;
+int countSeconds=0;
+int minsToStopAt=80;
+boolean timeUpFlag=false;
+float tempSetMax = 55.0;
+void setup()
+{
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN,HIGH);
+  Serial.begin(9600);
+  delay(3000);
 }
+void loop()
+{
 
-void loop() {
+  if(!timeUpFlag){
+  int tempReading = analogRead(tempPin);
+  double tempK = log(10000.0 * ((1024.0 / tempReading - 1)));
+  tempK = 1 / (0.001129148 + (0.000234125 + (0.0000000876741 * tempK * tempK )) * tempK );       //  Temp Kelvin
+  float tempC = tempK - 273.15;            // Convert Kelvin to Celcius
+ 
+  
+  delay(1000);
 
-int rightInput = digitalRead(inputRight);
-int leftInput = digitalRead(inputLeft);
-int forwardInput = digitalRead(inputForward);
-int backwardInput = digitalRead(inputBackward);
+   countSeconds++;
 
-
-
-if(rightInput == HIGH){
-  turnRight();
-}
-
-if(leftInput == HIGH){
-  turnLeft();
-}
-
-if(rightInput == LOW && leftInput == LOW && forwardInput == HIGH){
-  moveForward();
-}
-if(rightInput == LOW && leftInput == LOW && backwardInput == HIGH){
-  moveBackward();
-}
-
-
-if(rightInput == LOW && leftInput == LOW && forwardInput == LOW && backwardInput == LOW){
-  stopCar();
-}
-
-
-delay(5);
-}
-
-void turnRight(){
-  digitalWrite(rightClock,LOW);
-  digitalWrite(rightAntiClock,HIGH);
-  digitalWrite(leftClock,HIGH);
-  digitalWrite(leftAntiClock,LOW);
-}
-
-void turnLeft(){
-  digitalWrite(rightClock,HIGH);
-  digitalWrite(rightAntiClock,LOW);
-  digitalWrite(leftClock,LOW);
-  digitalWrite(leftAntiClock,HIGH);
-}
-
-void moveForward(){
-  digitalWrite(rightClock,HIGH);
-  digitalWrite(rightAntiClock,LOW);
-  digitalWrite(leftClock,HIGH);
-  digitalWrite(leftAntiClock,LOW);
-}
-
-void moveBackward(){
-  digitalWrite(rightClock,LOW);
-  digitalWrite(rightAntiClock,HIGH);
-  digitalWrite(leftClock,LOW);
-  digitalWrite(leftAntiClock,HIGH);
-}
-
-void stopCar(){
-  digitalWrite(rightClock,LOW);
-  digitalWrite(rightAntiClock,LOW);
-  digitalWrite(leftClock,LOW);
-  digitalWrite(leftAntiClock,LOW);
+  if(countSeconds >= minsToStopAt * 60 || tempC >= tempSetMax){
+    timeUpFlag=true;
+    
+  }
+   
+Serial.print("TIME: ");
+Serial.print(countSeconds);
+Serial.print(" TEMP: ");
+Serial.println(tempC);
+  }
+  else{
+    digitalWrite(LED_BUILTIN,LOW);
+  }
+  
 }
